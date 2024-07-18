@@ -1,0 +1,55 @@
+-- Récupérer tous les albums
+SELECT * FROM albums;
+
+-- Récupérer tous les albums dont le titre contient "Great"
+SELECT * FROM albums WHERE title LIKE '%Great%';
+
+-- Donner le nombre total d'albums contenus dans la base
+SELECT COUNT(*) FROM albums;
+
+-- Supprimer tous les albums dont le nom contient "music"
+DELETE FROM albums WHERE title LIKE '%music%';
+
+-- Récupérer tous les albums écrits par AC/DC
+SELECT albums.* FROM albums
+JOIN artists ON albums.artist_id = artists.id
+WHERE artists.name = 'AC/DC';
+
+-- Récupérer tous les titres des albums de AC/DC
+SELECT tracks.title FROM tracks
+JOIN albums ON tracks.album_id = albums.id
+JOIN artists ON albums.artist_id = artists.id
+WHERE artists.name = 'AC/DC';
+
+-- Récupérer la liste des titres de l'album "Let There Be Rock"
+SELECT tracks.title FROM tracks
+JOIN albums ON tracks.album_id = albums.id
+WHERE albums.title = 'Let There Be Rock';
+
+-- Afficher le prix de cet album ainsi que sa durée totale
+SELECT albums.price, SUM(tracks.duration) AS total_duration FROM albums
+JOIN tracks ON tracks.album_id = albums.id
+WHERE albums.title = 'Let There Be Rock';
+
+-- Afficher le coût de l'intégralité de la discographie de "Deep Purple"
+SELECT SUM(albums.price) AS total_cost FROM albums
+JOIN artists ON albums.artist_id = artists.id
+WHERE artists.name = 'Deep Purple';
+
+-- Créer l'album de ton artiste favori en base, en renseignant correctement les trois tables albums, artists et tracks
+-- Ajouter l'artiste
+INSERT INTO artists (name) VALUES ('Favorite Artist');
+
+-- Récupérer l'id de l'artiste ajouté
+SELECT id FROM artists WHERE name = 'Favorite Artist';
+
+-- Ajouter l'album en utilisant l'id de l'artiste
+-- Supposons que l'id de l'artiste soit 10
+INSERT INTO albums (title, artist_id, price) VALUES ('Favorite Album', 10, 9.99);
+
+-- Récupérer l'id de l'album ajouté
+SELECT id FROM albums WHERE title = 'Favorite Album';
+
+-- Ajouter le titre en utilisant l'id de l'album
+-- Supposons que l'id de l'album soit 20
+INSERT INTO tracks (title, album_id, duration) VALUES ('Favorite Song', 20, 240);
